@@ -6,8 +6,14 @@
     box-sizing: border-box;
     font-family: "Bebas Neue";
 }
+:root {
+    --bg: lightgray;
+}
+.dark {
+    --bg: grey;
+}
 body {
-    background: lightgrey;
+    background: var(--bg);
     display: flex;
     justify-content: center;
     height: 100vh;
