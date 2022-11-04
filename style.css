@@ -19,22 +19,6 @@ body {
     align-items: center;
     justify-content: center;
 }
-a {
-    font-size: 3em;
-    color: black;
-    background: transparent;
-    border: solid black .13em;
-    cursor: pointer;
-}
-a:hover {
-    background: white;
-    box-shadow: 8px 8px #050505;
-    transform: translate(-8px, -8px);
-}
-
-
-
-
 #start {
     border: none;
     font-size: 3em;
@@ -70,4 +54,24 @@ a:hover {
 #start:active {
     box-shadow: 0 6px #6161ff;
     transform: translate(0, 6px);
+}
+.rpsButton {
+    font-size: 3em;
+    width: 5em;
+    color: black;
+    margin: .5em;
+    padding: .5em;
+    background: transparent;
+    border: solid black .13em;
+    cursor: pointer;
+    transition: 300ms;
+}
+.rpsButton:hover {
+    background: white;
+    box-shadow: 8px 8px #050505;
+    transform: translate(-8px, -8px);
+}
+h1 {
+    font-size: 3em;
+    font-weight: lighter;
 }
