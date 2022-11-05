@@ -25,14 +25,17 @@ body {
     align-items: center;
     text-align: center;
 }
-h1 {
+h1, h2 {
     font-family: 'Delius';
     color: var(--toggle);
+    font-size: 3em;
+    transition: 1000ms;
+}
+h1 {
     border: var(--toggle) solid .13em;
     padding: .3em .7em;
     margin: .5em;
-    font-size: 3em;
-    transition: 1000ms;
+    cursor: pointer;
 }
 
 .toggle, .container {
@@ -153,4 +156,5 @@ h1 {
 
 .imgDiv {
     display: flex;
+    align-items: center;
 }

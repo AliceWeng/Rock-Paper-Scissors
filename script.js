@@ -80,8 +80,10 @@ let loadGame = async () => {
         let imgDiv = document.createElement("div");
         imgDiv.classList = "imgDiv";
         let player = document.createElement("img");
+        let vs = document.createElement("h2");
+        vs.textContent = "vs";
         let computer = document.createElement("img");
-        imgDiv.append(player, computer);
+        imgDiv.append(player, vs, computer);
 
         let weaponsDiv = document.createElement("div");
         createButton("attack").appendTo(weaponsDiv);
@@ -93,10 +95,8 @@ let loadGame = async () => {
         let submitChoices = (p, c) => {
             player.src = `./img/${p}.png`;
             player.alt = p;
-            player.id = "player";
             computer.src = `./img/${c}.png`;
             computer.alt = c;
-            computer.id = "computer";
         
             switch(p + c) {
                 case "rockscissors":
@@ -146,7 +146,7 @@ let loadGame = async () => {
             game.append(h1, imgDiv, weaponsDiv);
             resolve();
         } else if(result === "draw") {
-            script = ["It's like looking in a mirror.", "You two become the best of friends.", "The end."];
+            script = ["It's like looking in a mirror.", "You end up becoming the best of friends.", "Everyone's a winner!"];
             game.append(h1, imgDiv, playAgain);
             narrate();
         } else if(result === "lose") {
