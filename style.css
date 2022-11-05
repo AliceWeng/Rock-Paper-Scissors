@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
-
 * {
     margin: 0;
     padding: 0;
@@ -7,77 +6,115 @@
     font-family: "Bebas Neue";
 }
 :root {
-    --bg: lightgray;
+    --toggle: #252525;
+    --scale: scale(0);
 }
-.dark {
-    --bg: grey;
+.mode {
+    --toggle: lightgray;
+    --scale: scale(1);
 }
 body {
-    background: var(--bg);
-    display: flex;
-    justify-content: center;
+    background: lightgray;
     height: 100vh;
-    align-items: center;
-}
-#game {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
 }
-#start {
+h1 {
+    color: var(--toggle);
+    font-size: 3em;
+    font-weight: lighter;
+    transition: 1000ms;
+}
+
+.toggle, .container {
+    position: absolute;
+    top: 2em;
+    right: 2em;
+    width: 1.5em;
+    height: 1.5em;
+}
+.toggle {
+    background: var(--toggle);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 1000ms;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    z-index: -1;
+}
+.dark {
+    position: relative;
+    background: #1f1f1f;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 250vmax;
+    height: 250vmax;
+    border-radius: 50%;
+    display: flex;
+    flex: 0 0 auto;
+    transform: var(--scale);
+    transition: 1000ms;
+}
+
+.buttonDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+@media (max-width: 850px) {
+    .buttonDiv {
+        flex-direction: column;
+    }
+}
+
+.pressed {
     border: none;
     font-size: 3em;
-    color: #6161ff;
-    background: #a3a3ff;
-    box-shadow: 0 12px #6161ff;
     padding: .3em .7em;
     border-radius: .3em;
+    color: var(--buttonColor);
+    background: var(--buttonBackground);
+    box-shadow: 0 12px var(--buttonColor);
     position: relative;
     overflow: hidden;
     cursor: pointer;
 }
-#start::before {
+.pressed::before {
     content: "";
     position: absolute;
     top: 0;
     left: -150%;
     height: 100%;
     width: 150%;
-    background: white;
     opacity: .15;
+    background: white;
     transform: rotate(50deg);
     transition: 1000ms ease;
 }
-#start:hover::before {
+.pressed:hover::before {
     left: 100%;
 }
-#start:hover {
-    color: #6161ff;
-    background: #a3a3ff;
-    box-shadow: 0 12px #6161ff;
-}
-#start:active {
-    box-shadow: 0 6px #6161ff;
+.pressed:active {
+    box-shadow: 0 6px var(--buttonColor);
     transform: translate(0, 6px);
 }
-.rpsButton {
-    font-size: 3em;
+#start {
+    --buttonColor: #1e8036;
+    --buttonBackground: #2ab925;
+}
+#rock, #paper, #scissors {
     width: 5em;
-    color: black;
     margin: .5em;
-    padding: .5em;
-    background: transparent;
-    border: solid black .13em;
-    cursor: pointer;
-    transition: 300ms;
-}
-.rpsButton:hover {
-    background: white;
-    box-shadow: 8px 8px #050505;
-    transform: translate(-8px, -8px);
-}
-h1 {
-    font-size: 3em;
-    font-weight: lighter;
+    --buttonColor: #5A5A5A;
+    --buttonBackground: #7D7D7D;
 }
