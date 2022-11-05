@@ -1,18 +1,18 @@
-let toggle = document.createElement("div");
-toggle.classList = "toggle";
-toggle.title = "dark mode toggle";
+let toggle = document.querySelector(".toggle");
+
 toggle.addEventListener("click", () => {
     document.body.classList.toggle("mode");
 });
 
-let container = document.createElement("div");
-container.classList = "container";
+let game = document.getElementById("game");
 
-let dark = document.createElement("div");
-dark.classList = "dark";
-
-document.body.append(toggle, container);
-container.append(dark);
+let createButton = (name, div) => {
+    let button = document.createElement("button");
+    button.textContent = name;
+    button.classList = "pressed";
+    button.id = name;
+    div.append(button);
+}
 
 let click = new Audio("./audio/click.mp3");
 
@@ -22,7 +22,7 @@ let loadGame = async () => {
         start.textContent = "start";
         start.classList = "pressed";
         start.id = "start";
-        document.body.append(start);
+        game.append(start);
 
         start.addEventListener("click", () => {
             click.play();
@@ -33,34 +33,28 @@ let loadGame = async () => {
         let h1 = document.createElement("h1");
         h1.textContent = "choose your fighter";
 
-        let buttonDiv = document.createElement("div");
-        buttonDiv.classList = "buttonDiv";
-
-        let createButton = rps => {
-            let button = document.createElement("button");
-            button.textContent = rps;
-            button.classList = "pressed";
-            button.id = rps;
-            buttonDiv.append(button);
-        }
+        let rpsDiv = document.createElement("div");
+        rpsDiv.classList = "rpsDiv";
 
         setTimeout(() => {
             start.remove();
-            document.body.append(h1, buttonDiv);
-            createButton("rock");
-            createButton("paper");
-            createButton("scissors");
+            game.append(h1, rpsDiv);
+            createButton("rock", rpsDiv);
+            createButton("paper", rpsDiv);
+            createButton("scissors", rpsDiv);
             resolve();
         }, 300);
     });
     await new Promise(resolve => {
         let player = document.createElement("img");
         let computer = document.createElement("img");
-        let h1 = document.querySelector("h1");
+        let imgDiv = document.createElement("div");
+
         let rock = document.getElementById("rock");
         let paper = document.getElementById("paper");
         let scissors = document.getElementById("scissors");
         let rps = [rock, paper, scissors];
+
         let computerChoose = ["rock", "paper", "scissors"];
 
         let playerChoose = (playerChoice, computerChoice) => {
@@ -68,7 +62,7 @@ let loadGame = async () => {
             player.alt = playerChoice;
             computer.src = `./img/${computerChoice}.png`;
             computer.alt = computerChoice;
-            document.body.append(player, computer);
+            imgDiv.append(player, computer);
         
             switch(playerChoice + computerChoice) {
                 case "rockscissors":
@@ -89,13 +83,20 @@ let loadGame = async () => {
             }
         }
 
+        let weaponsDiv = document.createElement("div");
+        weaponsDiv.classList = "weaponsDiv";
+
+        createButton("attack", weaponsDiv);
+        createButton("defend", weaponsDiv);
+        createButton("talk", weaponsDiv);
+
         rps.forEach(button => {
             button.addEventListener("click", e => {
                 click.play();
+                game.innerHTML = "";
+                game.append(imgDiv);
+                game.append(weaponsDiv);
                 playerChoose(e.target.id, computerChoose[Math.floor(Math.random() * computerChoose.length)]);
-                rock.remove();
-                paper.remove();
-                scissors.remove();
                 resolve();
             });
         });

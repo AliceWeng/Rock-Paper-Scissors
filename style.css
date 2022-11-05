@@ -15,16 +15,19 @@
 }
 body {
     background: lightgray;
+    overflow: hidden;
+}
+#game {
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    overflow: hidden;
 }
 h1 {
     color: var(--toggle);
+    margin: .5em;
     font-size: 3em;
     font-weight: lighter;
     transition: 1000ms;
@@ -66,19 +69,20 @@ h1 {
     transition: 1000ms;
 }
 
-.buttonDiv {
+.rpsDiv {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 @media (max-width: 850px) {
-    .buttonDiv {
+    .rpsDiv {
         flex-direction: column;
     }
 }
 
 .pressed {
     border: none;
+    margin: .5em;
     font-size: 3em;
     padding: .3em .7em;
     border-radius: .3em;
@@ -109,12 +113,41 @@ h1 {
     transform: translate(0, 6px);
 }
 #start {
-    --buttonColor: #1e8036;
+    --buttonColor: #208b3b;
     --buttonBackground: #2ab925;
+}
+#start:hover {
+    --buttonColor: #1b7933;
 }
 #rock, #paper, #scissors {
     width: 5em;
-    margin: .5em;
-    --buttonColor: #5A5A5A;
+    --buttonColor: #5c5c5c;
     --buttonBackground: #7D7D7D;
+}
+#rock:hover, #paper:hover, #scissors:hover {
+    --buttonColor: #4f4f4f;
+}
+#attack, #defend, #talk {
+    width: 5em;
+}
+#attack {
+    --buttonColor: #b30000;
+    --buttonBackground: #dd2c2c;
+}
+#attack:hover {
+    --buttonColor: #990000;
+}
+#defend {
+    --buttonColor: #003ab6;
+    --buttonBackground: #285ed4;
+}
+#defend:hover {
+    --buttonColor: #00329e;
+}
+#talk {
+    --buttonColor: #7433c9;
+    --buttonBackground: #a14fec;
+}
+#talk:hover {
+    --buttonColor: #672db4;
 }
