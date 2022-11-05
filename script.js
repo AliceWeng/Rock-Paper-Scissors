@@ -19,9 +19,20 @@ let createButton = name => {
     }
 }
 
+let playAgain = document.createElement("button");
+playAgain.textContent = "play again";
+playAgain.classList = "pressed";
+playAgain.id = "playAgain";
+playAgain.addEventListener("click", () => {
+    click.play();
+    setTimeout(() => {
+        window.location.reload(); 
+    }, 300);
+});
+
 let click = new Audio("./audio/click.mp3");
 
-let playerChoice;
+let playerChoice; let result;
 
 let loadGame = async () => {
     await new Promise(resolve => {
@@ -36,7 +47,7 @@ let loadGame = async () => {
     });
     await new Promise(resolve => {
         let h1 = document.createElement("h1");
-        h1.textContent = "choose your fighter";
+        h1.textContent = "Choose your fighter.";
 
         let rpsDiv = document.createElement("div");
 
@@ -67,6 +78,7 @@ let loadGame = async () => {
         let h1 = document.createElement("h1");
 
         let imgDiv = document.createElement("div");
+        imgDiv.classList = "imgDiv";
         let player = document.createElement("img");
         let computer = document.createElement("img");
         imgDiv.append(player, computer);
@@ -81,49 +93,76 @@ let loadGame = async () => {
         let submitChoices = (p, c) => {
             player.src = `./img/${p}.png`;
             player.alt = p;
+            player.id = "player";
             computer.src = `./img/${c}.png`;
             computer.alt = c;
+            computer.id = "computer";
         
             switch(p + c) {
                 case "rockscissors":
                 case "paperrock":
                 case "scissorspaper":
-                    winner = "player";
-                    h1.textContent = "";
+                    result = "win";
                     break;
                 case "rockrock":
                 case "paperpaper":
                 case "scissorsscissors":
-                    winner = "null";
-                    h1.textContent = "";
+                    result = "draw";
                     break;
                 case "rockpaper":
                 case "paperscissors":
                 case "scissorsrock":
-                    winner = "computer";
-                    h1.textContent = "";
+                    result = "lose";
                     break;
             }
         }
 
         submitChoices(playerChoice, computerChoice[Math.floor(Math.random() * computerChoice.length)]);
 
-        game.append(h1, imgDiv, weaponsDiv);
-        
+        let script;
+        let read = [];
+        let a = 0;
+        let b = 0;
+
+        let narrate = () => {
+            h1.textContent = read.join("");
+            if(b < script[a].length) {
+                    read.push(script[a][b]);
+                    b++;
+                }
+            setTimeout(narrate, 50);
+        }
+
+        h1.addEventListener("click", () => {
+            if(a < script.length - 1) {
+                a++;
+                read = [];
+                b = 0;
+            }
+        })
+
+        if(result === "win") {
+            h1.textContent = "You've got the upperhand.";
+            game.append(h1, imgDiv, weaponsDiv);
+            resolve();
+        } else if(result === "draw") {
+            script = ["It's like looking in a mirror.", "You two become the best of friends.", "The end."];
+            game.append(h1, imgDiv, playAgain);
+            narrate();
+        } else if(result === "lose") {
+            h1.textContent = "You've been attacked.";
+            game.append(h1, imgDiv, weaponsDiv);
+            resolve();
+        }
+    });
+    await new Promise(resolve => {
+        let attack = document.getElementById("attack");
+        let defend = document.getElementById("defend");
+        let talk = document.getElementById("talk");
+
+        if(result)
         resolve();
     });
 }
 
 loadGame();
-
-/*
-    let playAgain = () => {
-        let button = document.createElement("button");
-        button.textContent = "play again";
-        button.classList = "pressed";
-        button.addEventListener("click", () => {
-            window.location.reload();
-        });
-        document.body.append(button);
-    }
-*/
