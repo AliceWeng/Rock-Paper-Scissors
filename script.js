@@ -6,27 +6,32 @@ toggle.addEventListener("click", () => {
 
 let game = document.getElementById("game");
 
-let createButton = (name, div) => {
+let createButton = name => {
     let button = document.createElement("button");
     button.textContent = name;
     button.classList = "pressed";
     button.id = name;
-    div.append(button);
+        let appendTo = div => {
+            div.append(button);
+        }
+    return {
+        appendTo: appendTo
+    }
 }
 
 let click = new Audio("./audio/click.mp3");
 
+let playerChoice;
+
 let loadGame = async () => {
     await new Promise(resolve => {
-        let start = document.createElement("button");
-        start.textContent = "start";
-        start.classList = "pressed";
-        start.id = "start";
-        game.append(start);
+        createButton("start").appendTo(game);
 
         start.addEventListener("click", () => {
             click.play();
-            resolve();
+            setTimeout(() => {
+                resolve();
+            }, 300);
         });
     });
     await new Promise(resolve => {
@@ -34,72 +39,78 @@ let loadGame = async () => {
         h1.textContent = "choose your fighter";
 
         let rpsDiv = document.createElement("div");
-        rpsDiv.classList = "rpsDiv";
 
-        setTimeout(() => {
-            start.remove();
-            game.append(h1, rpsDiv);
-            createButton("rock", rpsDiv);
-            createButton("paper", rpsDiv);
-            createButton("scissors", rpsDiv);
-            resolve();
-        }, 300);
-    });
-    await new Promise(resolve => {
-        let player = document.createElement("img");
-        let computer = document.createElement("img");
-        let imgDiv = document.createElement("div");
+        start.remove();
+        game.append(h1, rpsDiv);
+        createButton("rock").appendTo(rpsDiv);
+        createButton("paper").appendTo(rpsDiv);
+        createButton("scissors").appendTo(rpsDiv);
 
         let rock = document.getElementById("rock");
         let paper = document.getElementById("paper");
         let scissors = document.getElementById("scissors");
         let rps = [rock, paper, scissors];
 
-        let computerChoose = ["rock", "paper", "scissors"];
+        rps.forEach(button => {
+            button.addEventListener("click", e => {
+                click.play();
+                playerChoice = e.target.id;
+                setTimeout(() => {
+                    resolve();
+                }, 300);
+            });
+        });
+    });
+    await new Promise(resolve => {
+        game.innerHTML = "";
 
-        let playerChoose = (playerChoice, computerChoice) => {
-            player.src = `./img/${playerChoice}.png`;
-            player.alt = playerChoice;
-            computer.src = `./img/${computerChoice}.png`;
-            computer.alt = computerChoice;
-            imgDiv.append(player, computer);
+        let h1 = document.createElement("h1");
+
+        let imgDiv = document.createElement("div");
+        let player = document.createElement("img");
+        let computer = document.createElement("img");
+        imgDiv.append(player, computer);
+
+        let weaponsDiv = document.createElement("div");
+        createButton("attack").appendTo(weaponsDiv);
+        createButton("defend").appendTo(weaponsDiv);
+        createButton("talk").appendTo(weaponsDiv);
+
+        let computerChoice = ["rock", "paper", "scissors"];
+
+        let submitChoices = (p, c) => {
+            player.src = `./img/${p}.png`;
+            player.alt = p;
+            computer.src = `./img/${c}.png`;
+            computer.alt = c;
         
-            switch(playerChoice + computerChoice) {
+            switch(p + c) {
                 case "rockscissors":
                 case "paperrock":
                 case "scissorspaper":
-                    h1.textContent = "you're a winner";
+                    winner = "player";
+                    h1.textContent = "";
                     break;
                 case "rockrock":
                 case "paperpaper":
                 case "scissorsscissors":
-                    h1.textContent = "it's a tie";
+                    winner = "null";
+                    h1.textContent = "";
                     break;
                 case "rockpaper":
                 case "paperscissors":
                 case "scissorsrock":
-                    h1.textContent = "you've been defeated";
+                    winner = "computer";
+                    h1.textContent = "";
                     break;
             }
         }
 
-        let weaponsDiv = document.createElement("div");
-        weaponsDiv.classList = "weaponsDiv";
+        submitChoices(playerChoice, computerChoice[Math.floor(Math.random() * computerChoice.length)]);
 
-        createButton("attack", weaponsDiv);
-        createButton("defend", weaponsDiv);
-        createButton("talk", weaponsDiv);
-
-        rps.forEach(button => {
-            button.addEventListener("click", e => {
-                click.play();
-                game.innerHTML = "";
-                game.append(imgDiv);
-                game.append(weaponsDiv);
-                playerChoose(e.target.id, computerChoose[Math.floor(Math.random() * computerChoose.length)]);
-                resolve();
-            });
-        });
+        game.append(h1, imgDiv, weaponsDiv);
+        
+        resolve();
     });
 }
 

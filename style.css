@@ -69,17 +69,6 @@ h1 {
     transition: 1000ms;
 }
 
-.rpsDiv {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-@media (max-width: 850px) {
-    .rpsDiv {
-        flex-direction: column;
-    }
-}
-
 .pressed {
     border: none;
     margin: .5em;
