@@ -6,76 +6,75 @@
     box-sizing: border-box;
 }
 :root {
+    --body: lightgrey;
     --toggle: #252525;
     --scale: scale(0);
 }
 .mode {
+    --body: #252525;
     --toggle: lightgray;
     --scale: scale(1);
 }
 body {
-    background: lightgray;
-    overflow: hidden;
+    background: var(--body);
+    transition: 1000ms;
 }
 #game {
     height: 100vh;
     display: flex;
+    text-align: center;
+    align-items: center;
     flex-direction: column;
     justify-content: space-around;
-    align-items: center;
-    text-align: center;
 }
-h1, h2 {
-    font-family: 'Delius';
-    color: var(--toggle);
+h1, h2 {    
     font-size: 3em;
+    color: var(--toggle);
+    font-family: 'Delius';
     transition: 1000ms;
 }
 h1 {
-    border: var(--toggle) solid .13em;
-    padding: .3em .7em;
     margin: .5em;
+    padding: .3em .7em;
+    border: var(--toggle) solid .13em;
     cursor: pointer;
 }
-
-.toggle, .container {
+.player {
+    padding-right: 3em;
+    transition: 300ms;
+}
+.computer {
+    padding-left: 3em;
+    transition: 300ms;
+}
+.imgDiv {
+    display: flex;
+    align-items: center;
+}
+@media (max-width: 550px) {
+    .player {
+        padding-right: 1.5em;
+    }
+    .computer {
+        padding-left: 1.5em;
+    }
+}
+/* dark mode toggle */
+.toggle {
     position: absolute;
-    top: 2em;
-    right: 2em;
+    bottom: 1.5em;
+    right: 1.5em;
     width: 1.5em;
     height: 1.5em;
-}
-.toggle {
     background: var(--toggle);
     border-radius: 50%;
     cursor: pointer;
     transition: 1000ms;
 }
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    pointer-events: none;
-    z-index: -1;
-}
-.dark {
-    position: relative;
-    background: #1f1f1f;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 250vmax;
-    height: 250vmax;
-    border-radius: 50%;
-    display: flex;
-    flex: 0 0 auto;
-    transform: var(--scale);
-    transition: 1000ms;
-}
-
+/* pressed button and shine effect */
 .pressed {
     border: none;
+    width: 4.5em;
     margin: .5em;
     font-size: 3em;
     padding: .3em .7em;
@@ -83,7 +82,7 @@ h1 {
     font-family: "Bebas Neue";
     color: var(--buttonColor);
     background: var(--buttonBackground);
-    box-shadow: 0 12px var(--buttonColor);
+    box-shadow: 0 .24em var(--buttonColor);
     position: relative;
     overflow: hidden;
     cursor: pointer;
@@ -93,21 +92,23 @@ h1 {
     position: absolute;
     top: 0;
     left: -150%;
-    height: 100%;
     width: 150%;
+    height: 100%;
     opacity: .15;
     background: white;
     transform: rotate(50deg);
-    transition: 1000ms ease;
+    transition: 1500ms;
 }
 .pressed:hover::before {
     left: 100%;
 }
 .pressed:active {
-    box-shadow: 0 6px var(--buttonColor);
-    transform: translate(0, 6px);
+    box-shadow: 0 .12em var(--buttonColor);
+    transform: translate(0, .12em);
 }
+/* colors for button id */
 #start {
+    width: auto;
     --buttonColor: #208b3b;
     --buttonBackground: #2ab925;
 }
@@ -115,15 +116,11 @@ h1 {
     --buttonColor: #1b7933;
 }
 #rock, #paper, #scissors {
-    width: 5em;
     --buttonColor: #5c5c5c;
     --buttonBackground: #7D7D7D;
 }
 #rock:hover, #paper:hover, #scissors:hover {
     --buttonColor: #4f4f4f;
-}
-#attack, #defend, #talk {
-    width: 5em;
 }
 #attack {
     --buttonColor: #b30000;
@@ -147,14 +144,10 @@ h1 {
     --buttonColor: #672db4;
 }
 #playAgain {
+    width: auto;
     --buttonColor: #c4c417;
     --buttonBackground: #e4e452;
 }
 #playAgain:hover {
     --buttonColor: #adad14;
-}
-
-.imgDiv {
-    display: flex;
-    align-items: center;
 }

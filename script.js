@@ -75,14 +75,18 @@ let loadGame = async () => {
     await new Promise(resolve => {
         game.innerHTML = "";
 
-        let h1 = document.createElement("h1");
-
         let imgDiv = document.createElement("div");
         imgDiv.classList = "imgDiv";
+
         let player = document.createElement("img");
+        player.classList = "player";
+
+        let computer = document.createElement("img");
+        computer.classList = "computer";
+
         let vs = document.createElement("h2");
         vs.textContent = "vs";
-        let computer = document.createElement("img");
+
         imgDiv.append(player, vs, computer);
 
         let weaponsDiv = document.createElement("div");
@@ -119,6 +123,7 @@ let loadGame = async () => {
 
         submitChoices(playerChoice, computerChoice[Math.floor(Math.random() * computerChoice.length)]);
 
+        let h1 = document.createElement("h1");
         let script;
         let read = [];
         let a = 0;
@@ -139,29 +144,37 @@ let loadGame = async () => {
                 read = [];
                 b = 0;
             }
-        })
+        });
 
-        if(result === "win") {
-            h1.textContent = "You've got the upperhand.";
-            game.append(h1, imgDiv, weaponsDiv);
-            resolve();
-        } else if(result === "draw") {
+        if(result === "draw") {
             script = ["It's like looking in a mirror.", "You end up becoming the best of friends.", "Everyone's a winner!"];
             game.append(h1, imgDiv, playAgain);
             narrate();
-        } else if(result === "lose") {
-            h1.textContent = "You've been attacked.";
+        } else if(result === "win" || "lose") {
+            if(result === "win") {
+                script = ["You've got the upperhand!"];
+            }
+            if(result === "lose") {
+                script = ["Oh no! You're under attack!"];
+            }
             game.append(h1, imgDiv, weaponsDiv);
-            resolve();
-        }
-    });
-    await new Promise(resolve => {
-        let attack = document.getElementById("attack");
-        let defend = document.getElementById("defend");
-        let talk = document.getElementById("talk");
+            narrate();
 
-        if(result)
-        resolve();
+            let attack = document.getElementById("attack");
+            let defend = document.getElementById("defend");
+            let talk = document.getElementById("talk");
+
+            attack.addEventListener("click", () => {
+
+            });
+            defend.addEventListener("click", () => {
+
+            });
+            talk.addEventListener("click", () => {
+
+            });
+        }
+
     });
 }
 
