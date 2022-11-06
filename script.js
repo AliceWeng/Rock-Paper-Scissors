@@ -19,20 +19,10 @@ let createButton = name => {
     }
 }
 
-let playAgain = document.createElement("button");
-playAgain.textContent = "play again";
-playAgain.classList = "pressed";
-playAgain.id = "playAgain";
-playAgain.addEventListener("click", () => {
-    click.play();
-    setTimeout(() => {
-        window.location.reload(); 
-    }, 300);
-});
-
 let click = new Audio("./audio/click.mp3");
+let horn = new Audio("./audio/horn.mp3");
 
-let playerChoice; let result;
+let playerChoice;
 
 let loadGame = async () => {
     await new Promise(resolve => {
@@ -75,17 +65,19 @@ let loadGame = async () => {
     await new Promise(resolve => {
         game.innerHTML = "";
 
+        let h1 = document.createElement("h1");
+        
         let imgDiv = document.createElement("div");
         imgDiv.classList = "imgDiv";
 
         let player = document.createElement("img");
         player.classList = "player";
 
-        let computer = document.createElement("img");
-        computer.classList = "computer";
-
         let vs = document.createElement("h2");
         vs.textContent = "vs";
+
+        let computer = document.createElement("img");
+        computer.classList = "computer";
 
         imgDiv.append(player, vs, computer);
 
@@ -94,36 +86,17 @@ let loadGame = async () => {
         createButton("defend").appendTo(weaponsDiv);
         createButton("talk").appendTo(weaponsDiv);
 
-        let computerChoice = ["rock", "paper", "scissors"];
+        let playAgain = document.createElement("button");
+        playAgain.textContent = "play again";
+        playAgain.classList = "pressed";
+        playAgain.id = "playAgain";
+        playAgain.addEventListener("click", () => {
+            click.play();
+            setTimeout(() => {
+                window.location.reload();
+            }, 300);
+        });
 
-        let submitChoices = (p, c) => {
-            player.src = `./img/${p}.png`;
-            player.alt = p;
-            computer.src = `./img/${c}.png`;
-            computer.alt = c;
-        
-            switch(p + c) {
-                case "rockscissors":
-                case "paperrock":
-                case "scissorspaper":
-                    result = "win";
-                    break;
-                case "rockrock":
-                case "paperpaper":
-                case "scissorsscissors":
-                    result = "draw";
-                    break;
-                case "rockpaper":
-                case "paperscissors":
-                case "scissorsrock":
-                    result = "lose";
-                    break;
-            }
-        }
-
-        submitChoices(playerChoice, computerChoice[Math.floor(Math.random() * computerChoice.length)]);
-
-        let h1 = document.createElement("h1");
         let script;
         let read = [];
         let a = 0;
@@ -143,38 +116,65 @@ let loadGame = async () => {
                 a++;
                 read = [];
                 b = 0;
-            }
+            } else horn.play();
         });
 
-        if(result === "draw") {
-            script = ["It's like looking in a mirror.", "You end up becoming the best of friends.", "Everyone's a winner!"];
-            game.append(h1, imgDiv, playAgain);
-            narrate();
-        } else if(result === "win" || "lose") {
-            if(result === "win") {
-                script = ["You've got the upperhand!"];
+        let result = is => {
+            switch(is) {
+                case "win":
+                case "lose":
+                    game.append(h1, imgDiv, weaponsDiv);
+
+                    let attack = document.getElementById("attack");
+                    let defend = document.getElementById("defend");
+                    let talk = document.getElementById("talk");
+        
+                    attack.addEventListener("click", () => {
+        
+                    });
+                    defend.addEventListener("click", () => {
+        
+                    });
+                    talk.addEventListener("click", () => {
+        
+                    });
+                    break;
+                case "draw":
+                    script = ["It's like looking in a mirror.", "You end up becoming the best of friends.", "Everyone wins!"];
+                    game.append(h1, imgDiv, playAgain);
+                    narrate();
+                    break;
             }
-            if(result === "lose") {
-                script = ["Oh no! You're under attack!"];
-            }
-            game.append(h1, imgDiv, weaponsDiv);
-            narrate();
-
-            let attack = document.getElementById("attack");
-            let defend = document.getElementById("defend");
-            let talk = document.getElementById("talk");
-
-            attack.addEventListener("click", () => {
-
-            });
-            defend.addEventListener("click", () => {
-
-            });
-            talk.addEventListener("click", () => {
-
-            });
         }
 
+        let submit = (p, c) => {
+            player.src = `./img/${p}.png`;
+            player.alt = p;
+            computer.src = `./img/${c}.png`;
+            computer.alt = c;
+        
+            switch(p + c) {
+                case "rockscissors":
+                case "paperrock":
+                case "scissorspaper":
+                    result("win");
+                    break;
+                case "rockrock":
+                case "paperpaper":
+                case "scissorsscissors":
+                    result("draw");
+                    break;
+                case "rockpaper":
+                case "paperscissors":
+                case "scissorsrock":
+                    result("lose");
+                    break;
+            }
+        }
+
+        let computerChoice = ["rock", "paper", "scissors"];
+
+        submit(playerChoice, computerChoice[Math.floor(Math.random() * computerChoice.length)]);
     });
 }
 

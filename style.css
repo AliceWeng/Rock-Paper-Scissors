@@ -61,7 +61,7 @@ h1 {
 }
 /* dark mode toggle */
 .toggle {
-    position: absolute;
+    position: fixed;
     bottom: 1.5em;
     right: 1.5em;
     width: 1.5em;
