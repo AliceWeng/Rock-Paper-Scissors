@@ -172,7 +172,8 @@ let loadGame = async () => {
                             if(playerHealth <= 0) {
                                 endFight();
                                 setTimeout(() => {
-                                    h1.textContent = "You lose.";
+                                    h1.textContent = "Defeat";
+                                    h1.style.textTransform = "uppercase";
                                     h1.addEventListener("click", () => {
                                         emotionalDamage.play();
                                     });
@@ -199,7 +200,8 @@ let loadGame = async () => {
                         playerAttack.then(() => computerAttack()).catch(() => {
                             endFight();
                             setTimeout(() => {
-                                h1.textContent = "You win.";
+                                h1.textContent = "Victory";
+                                h1.style.textTransform = "uppercase";
                                 h1.addEventListener("click", () => {
                                     window.open("https://www.youtube.com/watch?v=u9rj5s-nDvw&ab_channel=TheRealSullyG",
                                     "_blank", "rel=noopener noreferrer");
@@ -223,16 +225,16 @@ let loadGame = async () => {
                         player.className = "talk";
                         mercy++;
                         if(mercy === 1) {
-                            h1.textContent = `You compliment them. They are confused.`;
+                            h1.textContent = `You compliment ${computer.alt}.`;
                             computerAttack();
                         } else if(mercy === 2) {
-                            h1.textContent = `You ask about their day.`;
+                            h1.textContent = `You ask about ${computer.alt}'s day.`;
                             computerAttack();
                         } else if(mercy === 3) {
                             endFight();
                             script = [  "You finally got through to them.",
                                         "You put aside your differences and have a nice conversation.",
-                                        "It's a beautiful day today."];
+                                        "It's a beautiful day today, you win."];
                             narrate();
                         }
                     });
