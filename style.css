@@ -27,11 +27,13 @@ body {
     flex-direction: column;
     justify-content: space-around;
 }
-h1, h2 {    
-    font-size: 3em;
+h1, h2, h3 {    
     color: var(--toggle);
     font-family: 'Delius';
     transition: 1000ms;
+}
+h1, h3 {
+    font-size: 3em;
 }
 h1 {
     margin: .5em;
@@ -39,27 +41,31 @@ h1 {
     border: var(--toggle) solid .13em;
     cursor: pointer;
 }
-canvas {
-    width: inherit;
+h2 {
+    margin: 0 2em;
+    font-size: 2em;
 }
-.player {
-    padding-right: 3em;
-    transition: 300ms;
+h3 {
+    margin: 0 1em;
 }
-.computer {
-    padding-left: 3em;
-    transition: 300ms;
+img {
+    margin: 1em 0;
 }
-.imgDiv {
+.flexDiv {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
-@media (max-width: 550px) {
-    .player {
-        padding-right: 1.5em;
+@media (max-width: 550px),
+    (max-height: 700px) {
+    #game {
+        display: block;
     }
-    .computer {
-        padding-left: 1.5em;
+    h1 {
+        display: inline-block;
+    }
+    h3 {
+        margin: 0 .5em;
     }
 }
 /* dark mode toggle */
