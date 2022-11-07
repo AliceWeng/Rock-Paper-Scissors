@@ -70,10 +70,12 @@ let loadGame = async () => {
         hpDiv.classList = "flexDiv";
 
         let playerHealth = 5;
-        let computerHealth = 5;
-
         let playerBar = document.createElement("h2");
+        playerBar.textContent = `Player : ${playerHealth}HP`;
+
+        let computerHealth = 5;
         let computerBar = document.createElement("h2");
+        computerBar.textContent = `Computer : ${computerHealth}HP`;
 
         hpDiv.append(playerBar, computerBar);
         
@@ -88,8 +90,7 @@ let loadGame = async () => {
 
         imgDiv.append(player, vs, computer);
 
-        let playerDamage;
-        let computerDamage;
+        let playerDamage; let computerDamage;
 
         let weaponsDiv = document.createElement("div");
         createButton("attack").appendTo(weaponsDiv);
@@ -141,32 +142,40 @@ let loadGame = async () => {
 
                     let mercy = 0;
 
+                    let computerAttack = () => {
+                        setTimeout(() => {
+                            computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
+                            playerHealth -= computerDamage;
+                            playerBar.textContent = `Player : ${playerHealth}HP`;
+                            h1.textContent = `The enemy's attack dealt ${computerDamage} damage.`;
+                            if(playerHealth <= 0) {
+                                gameOver();
+                                h1.textContent = "You've lost.";
+                            }
+                        }, 1500);
+                    }
+                    
+                    let gameOver = () => {
+                        weaponsDiv.remove();
+                        game.append(playAgain);
+                    }
+
                     attack.addEventListener("click", e => {
                         click.play();
-                        let playerAttack = new Promise(resolve => {
-                            e.preventDefault();
+                        let playerAttack = new Promise((resolve, reject) => {
                             playerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
                             computerHealth -= playerDamage;
                             computerBar.textContent = `Computer : ${computerHealth}HP`;
                             h1.textContent = `Your attack dealt ${playerDamage} damage.`;
-                            if(computerHealth <= 0) {
-                                weaponsDiv.remove();
-                                game.append(playAgain);
-                            } else resolve();
+                            if(computerHealth > 0) {
+                                resolve();
+                            } else reject();
+
                         });
-                        let computerAttack = new Promise(resolve => {
-                            setTimeout(() => {
-                                computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
-                                playerHealth -= computerDamage;
-                                playerBar.textContent = `Player : ${playerHealth}HP`;
-                                h1.textContent = `The enemy's attack dealt ${computerDamage} damage.`;
-                                if(playerHealth <= 0) {
-                                    weaponsDiv.remove();
-                                    game.append(playAgain);
-                                }
-                            }, 2000);
+                        playerAttack.then(() => computerAttack()).catch(() => {
+                            gameOver();
+                            h1.textContent = "You've won."
                         });
-                        playerAttack.then(computerAttack);
                     });
                     
                     defend.addEventListener("click", () => {
@@ -179,7 +188,7 @@ let loadGame = async () => {
                         click.play();
                         mercy++;
                         if(playerHealth <= 0) {
-
+                            endGame();
                         } else if(mercy === 1) {
                             h1.textContent = `You compliment the enemy. You take ${computerDamage} damage.`;
                         } else if(mercy === 2) {
@@ -187,27 +196,23 @@ let loadGame = async () => {
                             playerHealth -= computerDamage;
                             playerBar.textContent = `Player : ${playerHealth}HP`;
                             h1.textContent = `You ask how their day was. You take ${computerDamage} damage.`;
+                    
                         } else if(mercy === 3) {
+                            endGame();
                             script = [  "You finally got through to them.",
                                         "You put aside your differences and had a nice conversation.",
                                         "It's a beautiful day today."];
-                            hpDiv.remove();
-                            weaponsDiv.remove();
-                            game.append(playAgain);
                             narrate();
                         }
-                        computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
-                        playerHealth -= computerDamage;
-                        playerBar.textContent = `Player : ${playerHealth}HP`;
                     });
 
 
                     break;
                 case "tie":
+                    game.append(h1, imgDiv, playAgain);
                     script = [  "It's like looking in a mirror.",
                                 "You end up becoming the best of friends.",
                                 "That's a win in my book."];
-                    game.append(h1, imgDiv, playAgain);
                     narrate();
                     break;
             }
@@ -223,9 +228,7 @@ let loadGame = async () => {
                 case "rockscissors":
                 case "paperrock":
                 case "scissorspaper":
-                    h1.textContent = "You sneak up on the enemy.";
-                    playerBar.textContent = `Player : ${playerHealth}HP`;
-                    computerBar.textContent = `Computer : ${computerHealth}HP`;
+                    h1.textContent = "You sneak up on the enemy."
                     you("win");
                     break;
                 case "rockrock":
@@ -236,14 +239,11 @@ let loadGame = async () => {
                 case "rockpaper":
                 case "paperscissors":
                 case "scissorsrock":
-                    h1.textContent = "The enemy used sneak attack.";
-                    setTimeout(() => {
-                        computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
-                        playerHealth -= computerDamage;
-                        playerBar.textContent = `Player : ${playerHealth}HP`;
-                        computerBar.textContent = `Computer : ${computerHealth}HP`;
-                        you("lose");
-                    }, 2000);
+                    computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
+                    playerHealth -= computerDamage;
+                    playerBar.textContent = `Player : ${playerHealth}HP`;
+                    h1.textContent = `The enemy used sneak attack. You lose ${computerDamage}HP.`;
+                    you("lose");
                     break;
             }
         }
