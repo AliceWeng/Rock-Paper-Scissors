@@ -149,20 +149,23 @@ let loadGame = async () => {
 
                     let computerAttack = () => {
                         setTimeout(() => {
+                            player.className = "";
+                            computer.className = "attack";
                             computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
                             playerHealth -= computerDamage;
                             playerBar.textContent = `Player : ${playerHealth}HP`;
-                            h1.textContent = `The enemy's attack dealt ${computerDamage} damage.`;
                             if(playerHealth <= 0) {
                                 endFight();
                                 h1.textContent = "You've lost the battle.";
-                            }
+                            } else h1.textContent = `The enemy's attack dealt ${computerDamage} damage.`;
                         }, 1500);
                     }
 
                     attack.addEventListener("click", e => {
                         click.play();
                         let playerAttack = new Promise((resolve, reject) => {
+                            computer.className = "";
+                            player.className = "attack";
                             playerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
                             computerHealth -= playerDamage;
                             computerBar.textContent = `Computer : ${computerHealth}HP`;
@@ -180,20 +183,22 @@ let loadGame = async () => {
                     
                     defend.addEventListener("click", () => {
                         click.play();
+                        computer.className = "attack";
+                        player.className = "defend";
                         computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
                         h1.textContent = `You blocked the enemy's attack of ${computerDamage} damage.`;
-                        player.className = "defend";
-                        computer.className = "attack";
                     });
                     
                     talk.addEventListener("click", () => {
                         click.play();
+                        computer.className = "";
+                        player.className = "talk";
                         mercy++;
                         if(mercy === 1) {
                             h1.textContent = `You compliment them. They are confused.`;
                             computerAttack();
                         } else if(mercy === 2) {
-                            h1.textContent = `You ask about their day. They shrug.`;
+                            h1.textContent = `You ask about their day.`;
                             computerAttack();
                         } else if(mercy === 3) {
                             endFight();
@@ -237,6 +242,7 @@ let loadGame = async () => {
                 case "rockpaper":
                 case "paperscissors":
                 case "scissorsrock":
+                    computer.className = "attack";
                     computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
                     playerHealth -= computerDamage;
                     playerBar.textContent = `Player : ${playerHealth}HP`;

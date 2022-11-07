@@ -45,24 +45,15 @@ h2 {
     margin: 0 2em;
     font-size: 2em;
 }
-@media (max-height: 750px) {
-    #game {
-        display: block;
-    }
-    h1 {
-        display: inline-block;
-    }
-
-}
 .flexDiv {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 img {
+    padding: 1em;
+    margin: 0 2em;
     margin-top: 1em;
-    margin-left: 3em;
-    margin-right: 3em;
     border-radius: 50%;
 }
 @media (max-width: 600px){
@@ -70,6 +61,7 @@ img {
         display: block;
     }
     img {
+        padding: .5em;
         margin-left: .5em;
         margin-right: .5em;
     }
@@ -78,6 +70,14 @@ img {
     }
     h2 {
         margin: 0 .5em;
+    }
+}
+@media (max-height: 800px) {
+    #game {
+        display: block;
+    }
+    h1 {
+        display: inline-block;
     }
 }
 .attack {
@@ -98,6 +98,7 @@ img {
     height: 1.5em;
     background: var(--toggle);
     border-radius: 50%;
+    z-index: 1;
     cursor: pointer;
     transition: 1000ms;
 }
