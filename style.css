@@ -45,28 +45,49 @@ h2 {
     margin: 0 2em;
     font-size: 2em;
 }
-h3 {
-    margin: 0 1em;
-}
-img {
-    margin: 1em 0;
-}
-.flexDiv {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-@media (max-width: 550px),
-    (max-height: 700px) {
+@media (max-height: 750px) {
     #game {
         display: block;
     }
     h1 {
         display: inline-block;
     }
-    h3 {
+
+}
+.flexDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+img {
+    margin-top: 1em;
+    margin-left: 3em;
+    margin-right: 3em;
+    border-radius: 50%;
+}
+@media (max-width: 600px){
+    #game {
+        display: block;
+    }
+    img {
+        margin-left: .5em;
+        margin-right: .5em;
+    }
+    h1, h3 {
+      font-size: 2.5em;
+    }
+    h2 {
         margin: 0 .5em;
     }
+}
+.attack {
+    box-shadow: inset 0 0 5em #dd2c2c;
+}
+.defend {
+    box-shadow: inset 0 0 5em #285ed4;
+}
+.talk {
+    box-shadow: inset 0 0 5em #a14fec;
 }
 /* dark mode toggle */
 .toggle {

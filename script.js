@@ -142,6 +142,11 @@ let loadGame = async () => {
 
                     let mercy = 0;
 
+                    let endFight = () => {
+                        weaponsDiv.remove();
+                        game.append(playAgain);
+                    }
+
                     let computerAttack = () => {
                         setTimeout(() => {
                             computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
@@ -149,15 +154,10 @@ let loadGame = async () => {
                             playerBar.textContent = `Player : ${playerHealth}HP`;
                             h1.textContent = `The enemy's attack dealt ${computerDamage} damage.`;
                             if(playerHealth <= 0) {
-                                gameOver();
-                                h1.textContent = "You've lost.";
+                                endFight();
+                                h1.textContent = "You've lost the battle.";
                             }
                         }, 1500);
-                    }
-                    
-                    let gameOver = () => {
-                        weaponsDiv.remove();
-                        game.append(playAgain);
                     }
 
                     attack.addEventListener("click", e => {
@@ -173,8 +173,8 @@ let loadGame = async () => {
 
                         });
                         playerAttack.then(() => computerAttack()).catch(() => {
-                            gameOver();
-                            h1.textContent = "You've won."
+                            endFight();
+                            h1.textContent = "You've won the battle.";
                         });
                     });
                     
@@ -182,25 +182,23 @@ let loadGame = async () => {
                         click.play();
                         computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
                         h1.textContent = `You blocked the enemy's attack of ${computerDamage} damage.`;
+                        player.className = "defend";
+                        computer.className = "attack";
                     });
                     
                     talk.addEventListener("click", () => {
                         click.play();
                         mercy++;
-                        if(playerHealth <= 0) {
-                            endGame();
-                        } else if(mercy === 1) {
-                            h1.textContent = `You compliment the enemy. You take ${computerDamage} damage.`;
+                        if(mercy === 1) {
+                            h1.textContent = `You compliment them. They are confused.`;
+                            computerAttack();
                         } else if(mercy === 2) {
-                            computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
-                            playerHealth -= computerDamage;
-                            playerBar.textContent = `Player : ${playerHealth}HP`;
-                            h1.textContent = `You ask how their day was. You take ${computerDamage} damage.`;
-                    
+                            h1.textContent = `You ask about their day. They shrug.`;
+                            computerAttack();
                         } else if(mercy === 3) {
-                            endGame();
+                            endFight();
                             script = [  "You finally got through to them.",
-                                        "You put aside your differences and had a nice conversation.",
+                                        "You put aside your differences and have a nice conversation.",
                                         "It's a beautiful day today."];
                             narrate();
                         }
