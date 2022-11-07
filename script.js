@@ -22,7 +22,7 @@ let createButton = name => {
 let click = new Audio("./audio/click.mp3");
 let horn = new Audio("./audio/horn.mp3");
 
-let playerChoice;
+let rpsPlayer;
 
 let loadGame = async () => {
     await new Promise(resolve => {
@@ -55,7 +55,7 @@ let loadGame = async () => {
         rps.forEach(button => {
             button.addEventListener("click", e => {
                 click.play();
-                playerChoice = e.target.id;
+                rpsPlayer = e.target.id;
                 setTimeout(() => {
                     resolve();
                 }, 300);
@@ -80,6 +80,32 @@ let loadGame = async () => {
         computer.classList = "computer";
 
         imgDiv.append(player, vs, computer);
+
+        let canvas = document.createElement("canvas");
+        let context = canvas.getContext("2d");
+
+        class healthBar {
+            constructor() {
+                this.x = 0;
+                this.y = 0;
+                this.width = 100;
+                this.height = 25;
+            }
+
+            draw() {
+                context.fillStyle = "green";
+                context.fillRect(this.x, this.y, this.width, this.height);
+            }
+
+            damageTaken(dmg) {
+                this.width -= dmg;
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                this.draw();
+            }
+        }
+
+        let playerHealthBar = new healthBar();
+        let computerHealthBar = new healthBar();
 
         let weaponsDiv = document.createElement("div");
         createButton("attack").appendTo(weaponsDiv);
@@ -119,27 +145,58 @@ let loadGame = async () => {
             } else horn.play();
         });
 
-        let result = is => {
-            switch(is) {
+        let you = result => {
+            switch(result) {
                 case "win":
                 case "lose":
-                    game.append(h1, imgDiv, weaponsDiv);
+                    game.append(h1, canvas, imgDiv, weaponsDiv);
 
                     let attack = document.getElementById("attack");
                     let defend = document.getElementById("defend");
                     let talk = document.getElementById("talk");
-        
-                    attack.addEventListener("click", () => {
-        
-                    });
-                    defend.addEventListener("click", () => {
-        
-                    });
-                    talk.addEventListener("click", () => {
-        
+                    let weapons = [attack, defend, talk];
+
+                    let damage = [];
+                    let computerDamage; let playerDamage;
+                    let mercy = 0;
+
+                    let action = (p, c) => {
+                        switch(p + c) {
+                            case "attackattack":
+                                playerDamage = damage[Math.floor(Math.random() * (3 - 0 + 1) + 0)];
+                                computerDamage = damage[Math.floor(Math.random() * (3 - 0 + 1) + 0)];
+                                h1.textContent = `Your attack dealt ${playerDamage} damage. The enemy's attack dealt ${computerDamage} damage.`;
+                                break;
+                            case "defendattack":
+                                computerDamage = damage[Math.floor(Math.random() * (3 - 0 + 1) + 0)];
+                                h1.textContent = `You blocked the enemy's attack of ${computerDamage} damage.`;
+                                break;
+                            case "talkattack":
+                                mercy++;
+                                if(mercy === 1) {
+                                    computerDamage = damage[Math.floor(Math.random() * (3 - 0 + 1) + 0)];
+                                    h1.textContent = `You compliment the enemy. They are confused but attack you for ${computerDamage} damage.`;
+                                } else if(mercy === 2) {
+                                    computerDamage = damage[Math.floor(Math.random() * (3 - 0 + 1) + 0)];
+                                    h1.textContent = "";
+                                } else if(mercy === 3) {
+                                    script = [];
+                                    weaponsDiv.remove();
+                                    game.append(playAgain);
+                                    narrate();
+                                }
+                                break;
+                        }
+                    }
+                                        
+                    weapons.forEach(weapon => {
+                        weapon.addEventListener("click", e => {
+                            click.play();
+                            action(e.target.id, "attack");
+                        });
                     });
                     break;
-                case "draw":
+                case "tie":
                     script = ["It's like looking in a mirror.", "You end up becoming the best of friends.", "Everyone wins!"];
                     game.append(h1, imgDiv, playAgain);
                     narrate();
@@ -157,24 +214,26 @@ let loadGame = async () => {
                 case "rockscissors":
                 case "paperrock":
                 case "scissorspaper":
-                    result("win");
+                    h1.textContent = "You sneak up on the enemy.";
+                    you("win");
                     break;
                 case "rockrock":
                 case "paperpaper":
                 case "scissorsscissors":
-                    result("draw");
+                    you("tie");
                     break;
                 case "rockpaper":
                 case "paperscissors":
                 case "scissorsrock":
-                    result("lose");
+                    h1.textContent = "The enemy used sneak attack.";
+                    you("lose");
                     break;
             }
         }
 
-        let computerChoice = ["rock", "paper", "scissors"];
+        let rpsComputer = ["rock", "paper", "scissors"];
 
-        submit(playerChoice, computerChoice[Math.floor(Math.random() * computerChoice.length)]);
+        submit(rpsPlayer, rpsComputer[Math.floor(Math.random() * rpsComputer.length)]);
     });
 }
 

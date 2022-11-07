@@ -39,6 +39,9 @@ h1 {
     border: var(--toggle) solid .13em;
     cursor: pointer;
 }
+canvas {
+    width: inherit;
+}
 .player {
     padding-right: 3em;
     transition: 300ms;
