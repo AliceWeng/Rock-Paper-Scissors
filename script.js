@@ -21,6 +21,7 @@ let createButton = name => {
 
 let click = new Audio("./audio/click.mp3");
 let horn = new Audio("./audio/horn.mp3");
+let emotionalDamage = new Audio("./audio/emotionaldamage.mp3");
 
 let playerChoice;
 
@@ -171,7 +172,10 @@ let loadGame = async () => {
                             if(playerHealth <= 0) {
                                 endFight();
                                 setTimeout(() => {
-                                    h1.textContent = "You lost the battle.";
+                                    h1.textContent = "You lose.";
+                                    h1.addEventListener("click", () => {
+                                        emotionalDamage.play();
+                                    });
                                 }, 1500);
                             }
                         }, 1500);
@@ -195,7 +199,11 @@ let loadGame = async () => {
                         playerAttack.then(() => computerAttack()).catch(() => {
                             endFight();
                             setTimeout(() => {
-                                h1.textContent = "You won the battle.";
+                                h1.textContent = "You win.";
+                                h1.addEventListener("click", () => {
+                                    window.open("https://www.youtube.com/watch?v=u9rj5s-nDvw&ab_channel=TheRealSullyG",
+                                    "_blank", "rel=noopener noreferrer");
+                                })
                             }, 1500);
                         });
                     });
