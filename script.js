@@ -154,10 +154,13 @@ let loadGame = async () => {
                             computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
                             playerHealth -= computerDamage;
                             playerBar.textContent = `Player : ${playerHealth}HP`;
+                            h1.textContent = `The enemy's attack dealt ${computerDamage} damage.`;
                             if(playerHealth <= 0) {
                                 endFight();
-                                h1.textContent = "You've lost the battle.";
-                            } else h1.textContent = `The enemy's attack dealt ${computerDamage} damage.`;
+                                setTimeout(() => {
+                                    h1.textContent = "You lost the battle.";
+                                }, 1500);
+                            }
                         }, 1500);
                     }
 
@@ -177,7 +180,9 @@ let loadGame = async () => {
                         });
                         playerAttack.then(() => computerAttack()).catch(() => {
                             endFight();
-                            h1.textContent = "You've won the battle.";
+                            setTimeout(() => {
+                                h1.textContent = "You won the battle.";
+                            }, 1500);
                         });
                     });
                     
@@ -208,8 +213,6 @@ let loadGame = async () => {
                             narrate();
                         }
                     });
-
-
                     break;
                 case "tie":
                     game.append(h1, imgDiv, playAgain);
