@@ -37,7 +37,7 @@ let loadGame = async () => {
     });
     await new Promise(resolve => {
         let h1 = document.createElement("h1");
-        h1.textContent = "It's a beautiful day today. Today's going to be a good day.";
+        h1.textContent = "Choose your fighter.";
 
         let rpsDiv = document.createElement("div");
 
@@ -62,7 +62,6 @@ let loadGame = async () => {
             });
         });
     });
-    await new Promise(resolve => {
         game.innerHTML = "";
 
         let h1 = document.createElement("h1");
@@ -72,6 +71,7 @@ let loadGame = async () => {
 
         let playerHealth = 5;
         let computerHealth = 5;
+
         let playerBar = document.createElement("h2");
         let computerBar = document.createElement("h2");
 
@@ -87,6 +87,14 @@ let loadGame = async () => {
         vs.textContent = "vs";
 
         imgDiv.append(player, vs, computer);
+
+        let playerDamage;
+        let computerDamage;
+
+        let weaponsDiv = document.createElement("div");
+        createButton("attack").appendTo(weaponsDiv);
+        createButton("defend").appendTo(weaponsDiv);
+        createButton("talk").appendTo(weaponsDiv);
 
         let playAgain = document.createElement("button");
         playAgain.textContent = "play again";
@@ -125,75 +133,75 @@ let loadGame = async () => {
             switch(result) {
                 case "win":
                 case "lose":
-                    let weaponsDiv = document.createElement("div");
-                    createButton("attack").appendTo(weaponsDiv);
-                    createButton("defend").appendTo(weaponsDiv);
-                    createButton("talk").appendTo(weaponsDiv);
-
                     game.append(h1, hpDiv, imgDiv, weaponsDiv);
 
                     let attack = document.getElementById("attack");
                     let defend = document.getElementById("defend");
                     let talk = document.getElementById("talk");
-                    let weapons = [attack, defend, talk];
 
                     let mercy = 0;
-                    let playerAttack;
-                    let computerAttack;
 
-                    let action = (p, c) => {
-                        switch(p + c) {
-                            case "attackattack":
-                                playerAttack = Math.floor(Math.random() * (3 - 1 + 1) + 1);
-                                computerHealth -= playerAttack;
-                                computerBar.textContent = `Computer : ${computerHealth}HP`;
-                                computerAttack = Math.floor(Math.random() * (3 - 1 + 1) + 1);
-                                playerHealth -= computerAttack;
+                    attack.addEventListener("click", e => {
+                        click.play();
+                        let playerAttack = new Promise(resolve => {
+                            e.preventDefault();
+                            playerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
+                            computerHealth -= playerDamage;
+                            computerBar.textContent = `Computer : ${computerHealth}HP`;
+                            h1.textContent = `Your attack dealt ${playerDamage} damage.`;
+                            if(computerHealth <= 0) {
+                                weaponsDiv.remove();
+                                game.append(playAgain);
+                            } else resolve();
+                        });
+                        let computerAttack = new Promise(resolve => {
+                            setTimeout(() => {
+                                computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
+                                playerHealth -= computerDamage;
                                 playerBar.textContent = `Player : ${playerHealth}HP`;
-                                h1.textContent = `Your attack dealt ${playerAttack} damage. The enemy's attack dealt ${computerAttack} damage.`;
-                                if(computerHealth <= 0) {
-
-                                } else if(playerHealth <= 0) {
-
-                                }
-                                break;
-                            case "defendattack":
-                                computerAttack = Math.floor(Math.random() * (3 - 1 + 1) + 1);
-                                h1.textContent = `You blocked the enemy's attack of ${computerAttack} damage.`;
-                                break;
-                            case "talkattack":
-                                mercy++;
+                                h1.textContent = `The enemy's attack dealt ${computerDamage} damage.`;
                                 if(playerHealth <= 0) {
-
-                                } else if(mercy === 1) {
-                                    h1.textContent = `You compliment the enemy. You take ${computerAttack} damage.`;
-                                } else if(mercy === 2) {
-                                    computerAttack = Math.floor(Math.random() * (3 - 1 + 1) + 1);
-                                    playerHealth -= computerAttack;
-                                    playerBar.textContent = `Player : ${playerHealth}HP`;
-                                    h1.textContent = `You ask how their day was. You take ${computerAttack} damage.`;
-                                } else if(mercy === 3) {
-                                    script = [  "You finally got through to them.",
-                                                "You put aside your differences and had a nice conversation.",
-                                                "It's a beautiful day today."];
-                                    hpDiv.remove();
                                     weaponsDiv.remove();
                                     game.append(playAgain);
-                                    narrate();
                                 }
-                                computerAttack = Math.floor(Math.random() * (3 - 1 + 1) + 1);
-                                playerHealth -= computerAttack;
-                                playerBar.textContent = `Player : ${playerHealth}HP`;
-                                break;
-                        }
-                    }
-                                        
-                    weapons.forEach(weapon => {
-                        weapon.addEventListener("click", e => {
-                            click.play();
-                            action(e.target.id, "attack");
+                            }, 2000);
                         });
+                        playerAttack.then(computerAttack);
                     });
+                    
+                    defend.addEventListener("click", () => {
+                        click.play();
+                        computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
+                        h1.textContent = `You blocked the enemy's attack of ${computerDamage} damage.`;
+                    });
+                    
+                    talk.addEventListener("click", () => {
+                        click.play();
+                        mercy++;
+                        if(playerHealth <= 0) {
+
+                        } else if(mercy === 1) {
+                            h1.textContent = `You compliment the enemy. You take ${computerDamage} damage.`;
+                        } else if(mercy === 2) {
+                            computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
+                            playerHealth -= computerDamage;
+                            playerBar.textContent = `Player : ${playerHealth}HP`;
+                            h1.textContent = `You ask how their day was. You take ${computerDamage} damage.`;
+                        } else if(mercy === 3) {
+                            script = [  "You finally got through to them.",
+                                        "You put aside your differences and had a nice conversation.",
+                                        "It's a beautiful day today."];
+                            hpDiv.remove();
+                            weaponsDiv.remove();
+                            game.append(playAgain);
+                            narrate();
+                        }
+                        computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
+                        playerHealth -= computerDamage;
+                        playerBar.textContent = `Player : ${playerHealth}HP`;
+                    });
+
+
                     break;
                 case "tie":
                     script = [  "It's like looking in a mirror.",
@@ -229,9 +237,13 @@ let loadGame = async () => {
                 case "paperscissors":
                 case "scissorsrock":
                     h1.textContent = "The enemy used sneak attack.";
-                    playerBar.textContent = `You : ${playerHealth}HP`;
-                    computerBar.textContent = `Computer : ${computerHealth}HP`;
-                    you("lose");
+                    setTimeout(() => {
+                        computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
+                        playerHealth -= computerDamage;
+                        playerBar.textContent = `Player : ${playerHealth}HP`;
+                        computerBar.textContent = `Computer : ${computerHealth}HP`;
+                        you("lose");
+                    }, 2000);
                     break;
             }
         }
@@ -239,7 +251,6 @@ let loadGame = async () => {
         let computerChoice = ["rock", "paper", "scissors"];
 
         submit(playerChoice, computerChoice[Math.floor(Math.random() * computerChoice.length)]);
-    });
 }
 
 loadGame();
