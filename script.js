@@ -147,6 +147,18 @@ let loadGame = async () => {
                         game.append(playAgain);
                     }
 
+                    let disableButtons = () => {
+                        attack.disabled = true;
+                        defend.disabled = true;
+                        talk.disabled = true;
+                    }
+
+                    let enableButtons = () => {
+                        attack.disabled = false;
+                        defend.disabled = false;
+                        talk.disabled = false;
+                    }
+
                     let computerAttack = () => {
                         setTimeout(() => {
                             player.className = "";
@@ -155,6 +167,7 @@ let loadGame = async () => {
                             playerHealth -= computerDamage;
                             playerBar.textContent = `Player : ${playerHealth}HP`;
                             h1.textContent = `The enemy's attack dealt ${computerDamage} damage.`;
+                            enableButtons();
                             if(playerHealth <= 0) {
                                 endFight();
                                 setTimeout(() => {
@@ -166,6 +179,7 @@ let loadGame = async () => {
 
                     attack.addEventListener("click", e => {
                         click.play();
+                        disableButtons();
                         let playerAttack = new Promise((resolve, reject) => {
                             computer.className = "";
                             player.className = "attack";
@@ -196,6 +210,7 @@ let loadGame = async () => {
                     
                     talk.addEventListener("click", () => {
                         click.play();
+                        disableButtons();
                         computer.className = "";
                         player.className = "talk";
                         mercy++;
