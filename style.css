@@ -46,14 +46,11 @@ h2 {
     font-size: 2em;
 }
 .flexDiv {
-    min-width: 0;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 img {
-    height: auto;
-    max-width: 100%;
     padding: 1em;
     margin: 0 2em;
     margin-top: 1em;
@@ -69,10 +66,10 @@ img {
         margin-right: .5em;
     }
     h1, h3 {
-      font-size: 2.5em;
+        font-size: 2.5em;
     }
-    h2 {
-        margin: 0 .5em;
+    .flexDiv {
+        display: inline-block;
     }
 }
 @media (max-height: 800px) {
