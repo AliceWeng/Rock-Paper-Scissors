@@ -66,6 +66,13 @@ img {
     h1, .flexDiv {
         display: inline-block;
     }
+    img {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    #start {
+        margin-top: 45vh;
+    }
 }
 @media (max-height: 800px) {
     #game {
