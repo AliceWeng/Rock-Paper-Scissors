@@ -60,15 +60,10 @@ img {
     #game {
         display: block;
     }
-    img {
-        padding: .5em;
-        margin-left: .5em;
-        margin-right: .5em;
-    }
     h1, h3 {
         font-size: 2.5em;
     }
-    .flexDiv {
+    h1, .flexDiv {
         display: inline-block;
     }
 }
