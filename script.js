@@ -1,15 +1,8 @@
-let toggle = document.querySelector(".toggle");
-
-toggle.addEventListener("click", () => {
-    document.body.classList.toggle("mode");
-});
-
 let game = document.getElementById("game");
 
 let createButton = name => {
     let button = document.createElement("button");
     button.textContent = name;
-    button.classList = "pressed";
     button.id = name;
         let appendTo = div => {
             div.append(button);
@@ -28,17 +21,17 @@ let playerChoice;
 let loadGame = async () => {
     await new Promise(resolve => {
         createButton("start").appendTo(game);
-
+        
         start.addEventListener("click", () => {
             click.play();
             setTimeout(() => {
                 resolve();
-            }, 300);
+            }, 150);
         });
     });
     await new Promise(resolve => {
         let h1 = document.createElement("h1");
-        h1.textContent = "Choose your fighter.";
+        h1.textContent = "Choose Your Fighter";
 
         let rpsDiv = document.createElement("div");
 
@@ -48,9 +41,6 @@ let loadGame = async () => {
         createButton("paper").appendTo(rpsDiv);
         createButton("scissors").appendTo(rpsDiv);
 
-        let rock = document.getElementById("rock");
-        let paper = document.getElementById("paper");
-        let scissors = document.getElementById("scissors");
         let rps = [rock, paper, scissors];
 
         rps.forEach(button => {
@@ -59,7 +49,7 @@ let loadGame = async () => {
                 playerChoice = e.target.id;
                 setTimeout(() => {
                     resolve();
-                }, 300);
+                }, 150);
             });
         });
     });
@@ -85,10 +75,9 @@ let loadGame = async () => {
 
         let player = document.createElement("img");
         let computer = document.createElement("img");
-
         let vs = document.createElement("h3");
         vs.textContent = "vs";
-
+        
         imgDiv.append(player, vs, computer);
 
         let playerDamage; let computerDamage;
@@ -100,13 +89,13 @@ let loadGame = async () => {
 
         let playAgain = document.createElement("button");
         playAgain.textContent = "play again";
-        playAgain.classList = "pressed";
         playAgain.id = "playAgain";
         playAgain.addEventListener("click", () => {
             click.play();
             setTimeout(() => {
-                window.location.reload();
-            }, 300);
+                game.innerHTML = "";
+                loadGame();
+            }, 150);
         });
 
         let script;
@@ -132,121 +121,124 @@ let loadGame = async () => {
         });
 
         let you = result => {
-            switch(result) {
-                case "win":
-                case "lose":
-                    game.append(h1, hpDiv, imgDiv, weaponsDiv);
+            if(result === "win") {
+                h1.textContent = "You sneak up on the enemy. It's your move."
+            }
+            if(result === "tie") {
+                game.append(h1, imgDiv, playAgain);
+                script = [  "It's like looking in a mirror.",
+                            "You end up becoming the best of friends.",
+                            "That's a win in my book."];
+                narrate();
+                return;
+            }
+            if(result === "lose") {
+                computer.className = "attack";
+                computerDamage = Math.floor(Math.random() * 3) + 1;
+                playerHealth -= computerDamage;
+                playerBar.textContent = `Player : ${playerHealth}HP`;
+                h1.textContent = `The enemy used sneak attack. You lose ${computerDamage}HP.`;
+            }
 
-                    let attack = document.getElementById("attack");
-                    let defend = document.getElementById("defend");
-                    let talk = document.getElementById("talk");
+            game.append(h1, hpDiv, imgDiv, weaponsDiv);
 
-                    let mercy = 0;
+            let endFight = () => {
+                weaponsDiv.remove();
+                game.append(playAgain);
+            }
 
-                    let endFight = () => {
-                        weaponsDiv.remove();
-                        game.append(playAgain);
-                    }
+            let disableButtons = () => {
+                attack.disabled = true;
+                defend.disabled = true;
+                talk.disabled = true;
+            }
 
-                    let disableButtons = () => {
-                        attack.disabled = true;
-                        defend.disabled = true;
-                        talk.disabled = true;
-                    }
+            let enableButtons = () => {
+                attack.disabled = false;
+                defend.disabled = false;
+                talk.disabled = false;
+            }
 
-                    let enableButtons = () => {
-                        attack.disabled = false;
-                        defend.disabled = false;
-                        talk.disabled = false;
-                    }
-
-                    let computerAttack = () => {
+            let computerAttack = () => {
+                setTimeout(() => {
+                    player.className = "";
+                    computer.className = "attack";
+                    computerDamage = Math.floor(Math.random() * 3) + 1;
+                    playerHealth -= computerDamage;
+                    playerBar.textContent = `Player : ${playerHealth}HP`;
+                    h1.textContent = `The enemy's attack dealt ${computerDamage} damage.`;
+                    enableButtons();
+                    if(playerHealth <= 0) {
+                        endFight();
                         setTimeout(() => {
-                            player.className = "";
-                            computer.className = "attack";
-                            computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
-                            playerHealth -= computerDamage;
-                            playerBar.textContent = `Player : ${playerHealth}HP`;
-                            h1.textContent = `The enemy's attack dealt ${computerDamage} damage.`;
-                            enableButtons();
-                            if(playerHealth <= 0) {
-                                endFight();
-                                setTimeout(() => {
-                                    h1.textContent = "Defeat";
-                                    h1.style.textTransform = "uppercase";
-                                    h1.addEventListener("click", () => {
-                                        emotionalDamage.play();
-                                    });
-                                }, 1500);
-                            }
+                            h1.textContent = "defeat";
+                            h1.style.textTransform = "uppercase";
+                            h1.addEventListener("click", () => {
+                                emotionalDamage.play();
+                            });
                         }, 1500);
                     }
-
-                    attack.addEventListener("click", e => {
-                        click.play();
-                        disableButtons();
-                        let playerAttack = new Promise((resolve, reject) => {
-                            computer.className = "";
-                            player.className = "attack";
-                            playerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
-                            computerHealth -= playerDamage;
-                            computerBar.textContent = `Computer : ${computerHealth}HP`;
-                            h1.textContent = `Your attack dealt ${playerDamage} damage.`;
-                            if(computerHealth > 0) {
-                                resolve();
-                            } else reject();
-
-                        });
-                        playerAttack.then(() => computerAttack()).catch(() => {
-                            endFight();
-                            setTimeout(() => {
-                                h1.textContent = "Victory";
-                                h1.style.textTransform = "uppercase";
-                                h1.addEventListener("click", () => {
-                                    window.open("https://www.youtube.com/watch?v=u9rj5s-nDvw&ab_channel=TheRealSullyG",
-                                    "_blank", "rel=noopener noreferrer");
-                                })
-                            }, 1500);
-                        });
-                    });
-                    
-                    defend.addEventListener("click", () => {
-                        click.play();
-                        computer.className = "attack";
-                        player.className = "defend";
-                        computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
-                        h1.textContent = `You blocked the enemy's attack of ${computerDamage} damage.`;
-                    });
-                    
-                    talk.addEventListener("click", () => {
-                        click.play();
-                        disableButtons();
-                        computer.className = "";
-                        player.className = "talk";
-                        mercy++;
-                        if(mercy === 1) {
-                            h1.textContent = `You compliment ${computer.alt}.`;
-                            computerAttack();
-                        } else if(mercy === 2) {
-                            h1.textContent = `You ask about ${computer.alt}'s day.`;
-                            computerAttack();
-                        } else if(mercy === 3) {
-                            endFight();
-                            script = [  "You finally got through to them.",
-                                        "You put aside your differences and have a nice conversation.",
-                                        "It's a beautiful day today, you win."];
-                            narrate();
-                        }
-                    });
-                    break;
-                case "tie":
-                    game.append(h1, imgDiv, playAgain);
-                    script = [  "It's like looking in a mirror.",
-                                "You end up becoming the best of friends.",
-                                "That's a win in my book."];
-                    narrate();
-                    break;
+                }, 1500);
             }
+            console.log(attack)
+            attack.addEventListener("click", e => {
+                click.play();
+                disableButtons();
+                let playerAttack = new Promise((resolve, reject) => {
+                    computer.className = "";
+                    player.className = "attack";
+                    playerDamage = Math.floor(Math.random() * 3) + 1;
+                    computerHealth -= playerDamage;
+                    computerBar.textContent = `Computer : ${computerHealth}HP`;
+                    h1.textContent = `Your attack dealt ${playerDamage} damage.`;
+                    if(computerHealth > 0) {
+                        resolve();
+                    } else reject();
+
+                });
+                playerAttack.then(() => computerAttack()).catch(() => {
+                    endFight();
+                    setTimeout(() => {
+                        h1.textContent = "victory";
+                        h1.style.textTransform = "uppercase";
+                        h1.addEventListener("click", () => {
+                            window.open("https://www.youtube.com/watch?v=u9rj5s-nDvw&ab_channel=TheRealSullyG",
+                            "_blank", "rel=noopener noreferrer");
+                        })
+                    }, 1500);
+                });
+            });
+            
+            defend.addEventListener("click", () => {
+                click.play();
+                computer.className = "attack";
+                player.className = "defend";
+                computerDamage = Math.floor(Math.random() * 3) + 1;
+                h1.textContent = `You blocked ${computerDamage} damage from the enemy's attack.`;
+            });
+
+            let mercy = 0;
+            
+            talk.addEventListener("click", () => {
+                click.play();
+                disableButtons();
+                computer.className = "";
+                player.className = "talk";
+                mercy++;
+                if(mercy === 1) {
+                    h1.textContent = `You compliment ${computer.alt}.`;
+                    computerAttack();
+                } else if(mercy === 2) {
+                    h1.textContent = `You ask about ${computer.alt}'s day.`;
+                    computerAttack();
+                } else if(mercy === 3) {
+                    endFight();
+                    script = [  "You finally got through to them.",
+                                "You put aside your differences and have a nice conversation.",
+                                "It's a beautiful day today."];
+                    narrate();
+                }
+            });
         }
 
         let submit = (p, c) => {
@@ -259,7 +251,6 @@ let loadGame = async () => {
                 case "rockscissors":
                 case "paperrock":
                 case "scissorspaper":
-                    h1.textContent = "You sneak up on the enemy."
                     you("win");
                     break;
                 case "rockrock":
@@ -270,11 +261,6 @@ let loadGame = async () => {
                 case "rockpaper":
                 case "paperscissors":
                 case "scissorsrock":
-                    computer.className = "attack";
-                    computerDamage = Math.floor(Math.random() * (3 - 1 + 1) + 1);
-                    playerHealth -= computerDamage;
-                    playerBar.textContent = `Player : ${playerHealth}HP`;
-                    h1.textContent = `The enemy used sneak attack. You lose ${computerDamage}HP.`;
                     you("lose");
                     break;
             }
