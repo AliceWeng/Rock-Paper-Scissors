@@ -1,4 +1,4 @@
-Instructions For How To Play
+How To Play
 1. Press "START."
 2. You'll have three options: "ROCK", "PAPER", or "SCISSORS."
     * If you tie, the game ends.
@@ -11,7 +11,7 @@ Instructions For How To Play
     * If your HP reaches 0, you lose.
     * If the computer's HP reaches 0, you win.
     * If you "TALK" three times without dying, you win.
-4. Once the game has ended, press the text at the top for an easter egg.
+4. Once the game ends, press the text at the top for an easter egg.
 
 YouTube Video Links | What I Learned From Them
 :------------------:|:--------------:

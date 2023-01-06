@@ -31,7 +31,7 @@ let loadGame = async () => {
     });
     await new Promise(resolve => {
         let h1 = document.createElement("h1");
-        h1.textContent = "Choose Your Fighter";
+        h1.textContent = "Choose your fighter.";
 
         let rpsDiv = document.createElement("div");
 
@@ -180,7 +180,7 @@ let loadGame = async () => {
                     }
                 }, 1500);
             }
-            console.log(attack)
+
             attack.addEventListener("click", e => {
                 click.play();
                 disableButtons();

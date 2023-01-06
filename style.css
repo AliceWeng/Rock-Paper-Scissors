@@ -7,11 +7,13 @@
 }
 :root {
     --body: lightgrey;
-    --toggle: #252525;
+    --toggle: #202020;
+    --h1: rgba(255, 255, 255, 0.75);
 }
 .mode {
-    --body: #252525;
-    --toggle: lightgray;
+    --body: #202020;
+    --toggle: lightgrey;
+    --h1: rgba(0, 0, 0, 0.5);
 }
 body {
     background: var(--body);
@@ -36,6 +38,7 @@ h1 {
     font-size: 2.5em;
     padding: .3em .7em;
     border: var(--toggle) solid .13em;
+    background: var(--h1);
     cursor: pointer;
 }
 h2 {
