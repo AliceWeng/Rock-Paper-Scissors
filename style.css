@@ -39,7 +39,6 @@ h1 {
     padding: .3em .7em;
     border: var(--toggle) solid .13em;
     background: var(--h1);
-    cursor: pointer;
 }
 h2 {
     margin: 0 2em;

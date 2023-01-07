@@ -104,6 +104,7 @@ let loadGame = async () => {
         let b = 0;
 
         let narrate = () => {
+            h1.style.cursor = "pointer";
             h1.textContent = read.join("");
             if(b < script[a].length) {
                     read.push(script[a][b]);
@@ -172,6 +173,7 @@ let loadGame = async () => {
                         endFight();
                         setTimeout(() => {
                             h1.textContent = "defeat";
+                            h1.style.cursor = "pointer";
                             h1.style.textTransform = "uppercase";
                             h1.addEventListener("click", () => {
                                 emotionalDamage.play();
@@ -200,6 +202,7 @@ let loadGame = async () => {
                     endFight();
                     setTimeout(() => {
                         h1.textContent = "victory";
+                        h1.style.cursor = "pointer";
                         h1.style.textTransform = "uppercase";
                         h1.addEventListener("click", () => {
                             window.open("https://www.youtube.com/watch?v=u9rj5s-nDvw&ab_channel=TheRealSullyG",
