@@ -7,38 +7,39 @@
 }
 :root {
     --body: lightgrey;
-    --toggle: #202020;
-    --h1: rgba(255, 255, 255, 0.75);
+    --contrast: #202020;
+    --h1: rgba(255, 255, 255, 0.5);
 }
-.mode {
+.dark {
     --body: #202020;
-    --toggle: lightgrey;
+    --contrast: lightgrey;
     --h1: rgba(0, 0, 0, 0.5);
 }
 body {
-    background: var(--body);
     transition: 500ms;
+    background: var(--body);
 }
-#game {
-    min-height: 100vh;
+.game {
     padding: 1em;
     display: flex;
+    min-height: 100vh;
     text-align: center;
     align-items: center;
     flex-direction: column;
     justify-content: space-around;
 }
-h1, h2, h3 {    
-    color: var(--toggle);
-    font-family: 'Delius';
+h1, h2, h3, a {
     transition: 500ms;
+    font-family: "Delius";
+    color: var(--contrast);
+    text-decoration: none;
 }
 h1 {
     margin: .5em;
     font-size: 2.5em;
     padding: .3em .7em;
-    border: var(--toggle) solid .13em;
     background: var(--h1);
+    border: var(--contrast) solid .13em;
 }
 h2 {
     margin: 0 2em;
@@ -47,10 +48,9 @@ h2 {
 h3 {
     font-size: 2.5em;
 }
-.flexDiv {
+.flex {
     display: flex;
     align-items: center;
-    justify-content: center;
 }
 img {
     padding: 1em;
@@ -59,10 +59,14 @@ img {
     border-radius: 50%;
 }
 @media (max-width: 600px){
-    .flexDiv {
-        display: inline-block;
+    h2 {
+        margin: 0;
+    }
+    .flex {
+        display: block;
     }
 }
+/* image background colors */
 .attack {
     box-shadow: inset 0 0 5em #dd2c2c;
 }
@@ -79,29 +83,28 @@ img {
     right: 1.5em;
     width: 1.5em;
     height: 1.5em;
-    background: var(--toggle);
-    border-radius: 50%;
-    z-index: 1;
     cursor: pointer;
     transition: 500ms;
+    border-radius: 50%;
+    background: var(--contrast);
 }
-/* pressed button and shine effect */
-button {
+/* button press and shine effect */
+.game button {
     border: none;
     width: 4.5em;
     margin: .5em;
+    cursor: pointer;
+    overflow: hidden;
     font-size: 2.75em;
+    position: relative;
     padding: .3em .7em;
     border-radius: .3em;
     font-family: "Bebas Neue";
     color: var(--buttonColor);
     background: var(--buttonBackground);
     box-shadow: 0 .24em var(--buttonColor);
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
 }
-button::before {
+.game button::before {
     content: "";
     position: absolute;
     top: 0;
@@ -109,18 +112,18 @@ button::before {
     width: 150%;
     height: 100%;
     opacity: .15;
+    transition: 1500ms;
     background: white;
     transform: rotate(50deg);
-    transition: 1500ms;
 }
-button:hover::before {
+.game button:hover::before {
     left: 100%;
 }
-button:active {
-    box-shadow: 0 .12em var(--buttonColor);
+.game button:active {
     transform: translate(0, .12em);
+    box-shadow: 0 .12em var(--buttonColor);
 }
-/* colors for button id */
+/* button id colors */
 #start {
     width: auto;
     --buttonColor: #208b3b;
@@ -157,11 +160,11 @@ button:active {
 #talk:hover {
     --buttonColor: #672db4;
 }
-#playAgain {
+#reload {
     width: auto;
     --buttonColor: #c4c417;
     --buttonBackground: #e4e452;
 }
-#playAgain:hover {
+#reload:hover {
     --buttonColor: #adad14;
 }
