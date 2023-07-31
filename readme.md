@@ -1,17 +1,16 @@
-How To Play
-1. Press "START."
-2. You'll have three options: "ROCK", "PAPER", or "SCISSORS."
-    * If you tie, the game ends.
+How to Play
+1. Press "start."
+2. Choose your fighter: "rock", "paper", or "scissors."
+    * If you tie, game over.
     * If you win, the game continues.
     * If you lose, the game continues and you're attacked.
-    * If the game continues, you'll enter a battle against the computer.
-3. You'll have three options: "ATTACK", "DEFEND", or "TALK."
-    * Each "ATTACK" randomly does between 1-3 damage.
-    * The computer always chooses to "ATTACK."
+    * If the game continues, you enter a battle against the computer.
+3. Choose your move: "attack", "defend", or "talk."
+    * Each "attack" deals between 1 to 3 damage at random.
+    * The computer always chooses to "attack."
     * If your HP reaches 0, you lose.
     * If the computer's HP reaches 0, you win.
-    * If you "TALK" three times without dying, you win.
-4. Once the game ends, press the text at the top for an easter egg.
+    * If you "talk" 3 times without dying, you win.
 
 YouTube Video Links | What I Learned From Them
 :------------------:|:--------------:

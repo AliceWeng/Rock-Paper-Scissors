@@ -1,3 +1,13 @@
+let toggle = document.getElementById("toggle");
+
+toggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+
+    if(document.body.classList.contains("dark")) {
+        toggle.ariaLabel = "turn off dark mode";
+    } else toggle.ariaLabel = "turn on dark mode";
+});
+
 let game = document.querySelector(".game");
 
 let createButton = name => {
